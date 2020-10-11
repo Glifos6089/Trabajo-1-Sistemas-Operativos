@@ -5,6 +5,7 @@ import sys
 import subprocess
 import os
 
+
 proc = None
 
 
@@ -41,9 +42,7 @@ if __name__ == "__main__":
 			result = subprocess.check_output('cut -d: -f1 /etc/passwd', shell=True)
 			print(str(result).split("\\n"))
 			usuario = int(input("ingrese el UID del usuario\n"))
-			os.setuid(usuario)
-			os.fork()
-			print(os.getpid())
+			juguete.proceso(usuario)
 			print("Proceso creado ")
 		elif op == 3:
 			x = int(input("Ingrese PID: \n"))
@@ -57,6 +56,9 @@ if __name__ == "__main__":
 				print("No se han creado procesos ")
 		elif op == 5:
 			break
+		elif op == 6:
+			usuario = str(input("ingrese el nombre del usuario\n"))
+			os.system("sudo -u "+usuario+" python3 juguete.py" )
 		print(imprimirmenu())
 		op = int(input())
 #hola
