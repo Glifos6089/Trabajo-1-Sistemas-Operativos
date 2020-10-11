@@ -5,7 +5,6 @@ import sys
 import subprocess
 import os
 
-
 proc = None
 
 
@@ -20,7 +19,6 @@ def imprimirmenu():
 	1: Show
 	2: Create
 	3: Kill
-	4: Ver pid ultimo proceso creado
 	5: exit
 		'''
 
@@ -29,7 +27,6 @@ if __name__ == "__main__":
 	1: Show
 	2: Create
 	3: Kill
-	4: Ver pid ultimo proceso creado
 	5: exit
 	''')
 	op = int(input())
@@ -42,23 +39,19 @@ if __name__ == "__main__":
 			result = subprocess.check_output('cut -d: -f1 /etc/passwd', shell=True)
 			print(str(result).split("\\n"))
 			usuario = int(input("ingrese el UID del usuario\n"))
-			juguete.proceso(usuario)
-			print("Proceso creado ")
+			try:
+				os.setuid(usuario)
+				os.fork()
+				print(os.getpid())
+				print("Proceso creado ")
+			except:
+				print("no se pudo crear, solo se puede crear 2 procesos(padre e hijo) por cada vez que se ejecuta el programa")
 		elif op == 3:
 			x = int(input("Ingrese PID: \n"))
 			p = os.kill(x, signal.SIGKILL)
 			print("Eliminado ")
-		elif op == 4:
-			print(os.setgid(123))
-			try:
-				print(proc.pid)
-			except:
-				print("No se han creado procesos ")
 		elif op == 5:
 			break
-		elif op == 6:
-			usuario = str(input("ingrese el nombre del usuario\n"))
-			os.system("sudo -u "+usuario+" python3 juguete.py" )
 		print(imprimirmenu())
 		op = int(input())
 #hola
