@@ -30,22 +30,28 @@ if __name__ == "__main__":
 	5: exit
 	''')
 	op = int(input())
+	contador=0
 	while op <= 5 or op > 0:
 		uid = os.getuid()
 		if op == 1:
 			mostrarTareas()
 		elif op == 2:
+			contseted= str(contador)
 			print(uid)
 			result = subprocess.check_output('cut -d: -f1 /etc/passwd', shell=True)
 			print(str(result).split("\\n"))
-			usuario = int(input("ingrese el UID del usuario\n"))
-			try:
-				os.setuid(usuario)
-				os.fork()
-				print(os.getpid())
-				print("Proceso creado ")
-			except:
-				print("no se pudo crear, solo se puede crear 2 procesos(padre e hijo) por cada vez que se ejecuta el programa")
+			usuario = input("ingrese el nombre del usuario\n")
+			os.system('su '+usuario+' -c "touch archivo'+contseted+'.py"')
+			archivo = open("archivo"+contseted+".py","w")
+			archivo.write("""import os
+print(os.getpid())
+while(True):
+    continue""")
+			archivo.close()
+			os.system('su '+usuario+' -c "python3 archivo'+contseted+'.py &"')
+			#os.system('su '+usuario+' -c "nano archivo'+contseted+'.txt"')
+			contador+=1
+			print("Proceso creado ")
 		elif op == 3:
 			x = int(input("Ingrese PID: \n"))
 			p = os.kill(x, signal.SIGKILL)
