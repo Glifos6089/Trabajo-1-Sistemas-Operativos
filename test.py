@@ -76,14 +76,22 @@ os.fork()
 while(True):
 	continue""")
 						archivo.close()
-						os.system('su '+usuario+' -c "python3 archivo'+contseted+'.py &"')
+						hola = os.system('su '+usuario+' -c "python3 archivo'+contseted+'.py &"')
 						#os.system('su '+usuario+' -c "nano archivo'+contseted+'.txt"')
 						contador+=1
+						print(str(hola))
 						print("Proceso creado junto con su hijo\n")
 		elif op == 3:
-			x = int(input("Ingrese PID: \n"))
-			p = os.kill(x, signal.SIGKILL)
-			print("Eliminado ")
+			x = int(input("Ingrese 1 para matar un proceso padre, ingrese 2 si va matar un proceso hijo(si usted mata un proceso padre con la opcion te matar proceso hijo no lo va a matar): \n"))
+			if x == 2:
+				a = int(input("ingrese el PID del hijo a matar"))
+				p = os.kill(a, signal.SIGKILL)
+				print("hijo aniquiladdo")
+			else:
+				y= str(input("ingrese el pid del proceso padre\n"))
+				p = os.kill(int(y)+1, signal.SIGKILL)		
+				p = os.kill(int(y), signal.SIGKILL)	
+				print("padre aniquilado")
 		elif op == 5:
 			break
 		print(imprimirmenu())
